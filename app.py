@@ -10,6 +10,7 @@ if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 # دالة التحقق من كلمة المرور
+# دالة التحقق من كلمة المرور باستخدام Streamlit Secrets
 def check_password():
     st.title("🔒 نظام الوصول الآمن")
     st.write("الرجاء إدخال كلمة المرور لفتح أداة توليد كلمات المرور:")
@@ -18,12 +19,14 @@ def check_password():
     password_input = st.text_input("كلمة المرور", type="password", placeholder="أدخل كلمة المرور هنا...")
     
     if st.button("دخول", type="primary"):
-        if password_input == "1981":
+        # مقارنة المدخل بقيمة السر المخزنة في إعدادات Streamlit
+        if password_input == st.secrets["ADMIN_PASSWORD"]:
             st.session_state["authenticated"] = True
             st.success("تم التحقق بنجاح! جاري تحويلك...")
             st.rerun()  # إعادة تشغيل الصفحة فوراً لإظهار الأداة
         else:
             st.error("كلمة المرور غير صحيحة! يرجى المحاولة مرة أخرى.")
+
 
 # ==================== منطق الأداة الأساسي ====================
 
